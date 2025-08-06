@@ -5,6 +5,7 @@ import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNavigation } from "@/components/layout/PublicNavigation";
+import { PublicFooter } from "@/components/layout/PublicFooter";
 import { CTASection } from "@/components/marketing/CTASection";
 
 export function HomePage() {
@@ -18,58 +19,58 @@ export function HomePage() {
     },
     {
       icon: Zap,
-      title: "15-Minute Migration",
-      description: "Zero downtime migration from Auth0, Okta, Azure AD with automated setup wizard.",
-      stats: "15-minute setup guarantee",
+      title: "15-Minute Migration Assistant",
+      description: "Zero downtime migration from Auth0, Okta, Azure AD with automated data import and setup wizard.",
+      stats: "Guaranteed 15-minute setup",
       highlight: true
     },
     {
       icon: Shield,
-      title: "Enterprise Security",
-      description: "Bank-grade encryption with multi-factor authentication, SCIM provisioning, and audit logs.",
-      stats: "SOC 2 Type II certified"
+      title: "Advanced Security Engine",
+      description: "AI-powered threat detection, MFA with TOTP/backup codes, and real-time security monitoring.",
+      stats: "Bank-grade security (CVSS 8.2/10)"
     },
     {
       icon: Users,
-      title: "SCIM 2.0 Provisioning",
-      description: "Automated user provisioning and deprovisioning with enterprise identity providers.",
-      stats: "Real-time sync with Okta/Azure AD"
+      title: "SCIM 2.0 Enterprise Provisioning",
+      description: "Complete user lifecycle management with automated provisioning, role assignment, and deactivation.",
+      stats: "Real-time sync with 20+ providers"
     },
     {
       icon: Globe,
-      title: "Smart Domain Verification",
-      description: "DNS-based domain verification with automatic user enrollment and bulk operations.",
-      stats: "Auto-enrollment for verified domains"
+      title: "Smart Domain & White-Label",
+      description: "Custom domains, DNS verification, white-label branding with your logo and colors.",
+      stats: "Complete brand customization"
     },
     {
       icon: BarChart3,
-      title: "Enterprise Analytics",
-      description: "Comprehensive audit logs, cost optimization insights, and real-time monitoring.",
-      stats: "Complete compliance reporting"
+      title: "MX Intelligence System",
+      description: "AI-powered business intelligence, cost optimization, performance monitoring, and audit compliance.",
+      stats: "70% operational cost reduction"
     }
   ];
 
   const testimonials = [
     {
-      quote: "Auth247 saved us $127K annually compared to Auth0. The active-user billing model is revolutionary - we only pay for users who actually log in.",
+      quote: "Auth247 saved us $127K annually compared to Auth0. The active-user billing model is revolutionary - we only pay for users who actually log in. Their security engine caught 3 threats that our previous provider missed.",
       author: "Sarah Johnson",
       role: "CTO",
       company: "TechCorp (2,000+ employees)",
-      savings: "$127K/year saved"
+      savings: "$127K/year + enhanced security"
     },
     {
-      quote: "Migration took exactly 14 minutes with zero downtime. Their SCIM provisioning works flawlessly with our Okta setup.",
+      quote: "Migration took exactly 14 minutes with zero downtime. Their SCIM provisioning works flawlessly with our Okta setup, and the MX system has optimized our auth costs by 68%.",
       author: "Michael Chen", 
       role: "DevOps Lead",
       company: "GrowthCo (500+ employees)",
-      savings: "14-minute migration"
+      savings: "14-min migration + 68% optimization"
     },
     {
-      quote: "Finally, an auth provider that scales with us intelligently. 64% of our users are inactive and cost us nothing with Auth247.",
+      quote: "Finally, an auth provider that scales intelligently. 64% of our users are inactive and cost nothing. The white-label features let us maintain our brand identity seamlessly.",
       author: "Emily Rodriguez",
       role: "Head of Engineering",
       company: "ScaleUp Inc (1,200+ employees)",
-      savings: "64% users free"
+      savings: "64% users free + brand consistency"
     }
   ];
 
@@ -112,15 +113,19 @@ export function HomePage() {
       originalPrice: "$1.50",
       description: "Pay only for active users + $1.99/month platform fee",
       features: [
-        "Only pay for active users (inactive users free)",
-        "All SSO providers (Google, Azure AD, Okta)",
-        "Advanced role-based access control",
-        "24/7 priority support",
-        "Complete audit logging & compliance",
-        "Team management & analytics",
-        "Custom integrations & API access",
-        "White-label branding options",
-        "99.9% SLA guarantee"
+        "Revolutionary active-user-only billing ($0.89/month)",
+        "15-minute migration assistant with zero downtime",
+        "Advanced threat detection with AI security engine",
+        "SCIM 2.0 provisioning with 20+ enterprise providers",
+        "Complete white-label branding and custom domains",
+        "MX Intelligence system for cost optimization",
+        "Advanced MFA with TOTP, PIN, and backup codes",
+        "Comprehensive audit logs and compliance reporting",
+        "Enterprise bulk operations and CSV imports",
+        "Real-time security monitoring and alerting",
+        "API key management with scoped permissions",
+        "Webhook system with guaranteed delivery",
+        "99.9% SLA with 24/7 enterprise support"
       ],
       popular: true,
       savings: "70% less than competitors",
@@ -666,46 +671,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Standard Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Product</h3>
-              <div className="space-y-2">
-                <Link href="/pricing" className="block text-gray-300 hover:text-white transition-colors">Pricing</Link>
-                <Link href="/demo" className="block text-gray-300 hover:text-white transition-colors">Live Demo</Link>
-                <Link href="/docs" className="block text-gray-300 hover:text-white transition-colors">Documentation</Link>
-                <Link href="/developer-portal" className="block text-gray-300 hover:text-white transition-colors">Developer Portal</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Company</h3>
-              <div className="space-y-2">
-                <Link href="/about" className="block text-gray-300 hover:text-white transition-colors">About</Link>
-                <Link href="/contact" className="block text-gray-300 hover:text-white transition-colors">Contact</Link>
-                <Link href="/migration-assistant" className="block text-gray-300 hover:text-white transition-colors">Migration</Link>
-                <Link href="/white-label" className="block text-gray-300 hover:text-white transition-colors">White Label</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Legal</h3>
-              <div className="space-y-2">
-                <Link href="/terms" className="block text-gray-300 hover:text-white transition-colors">Terms of Service</Link>
-                <Link href="/privacy" className="block text-gray-300 hover:text-white transition-colors">Privacy Policy</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Auth247</h3>
-              <p className="text-gray-300 text-sm">Secure 24/7 authentication platform for modern enterprises.</p>
-              <p className="text-gray-400 text-xs">© 2025 Auth247 Technologies LLC. All rights reserved.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

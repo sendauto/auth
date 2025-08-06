@@ -11,6 +11,8 @@ import {
   Settings, BarChart3, Lock, ArrowRight, DollarSign, Zap 
 } from 'lucide-react';
 import { Link } from 'wouter';
+import { PublicNavigation } from '@/components/layout/PublicNavigation';
+import { PublicFooter } from '@/components/layout/PublicFooter';
 
 const enterpriseFeatures = [
   {
@@ -86,7 +88,9 @@ export default function EnterpriseIndex() {
   };
 
   return (
-    <div className="container max-w-7xl mx-auto p-6 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
+      <PublicNavigation />
+      <div className="container max-w-7xl mx-auto p-6 space-y-8">
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold">Enterprise Features</h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -261,6 +265,8 @@ export default function EnterpriseIndex() {
           </div>
         </CardContent>
       </Card>
+      </div>
+      <PublicFooter />
     </div>
   );
 }

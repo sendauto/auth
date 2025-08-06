@@ -6,6 +6,7 @@ import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNavigation } from "@/components/layout/PublicNavigation";
+import { PublicFooter } from "@/components/layout/PublicFooter";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
@@ -46,19 +47,22 @@ export function PricingPage() {
   const pricing = calculatePricing();
 
   const features = [
-    "Revolutionary active-user-only billing model",
-    "Inactive users completely free forever",
-    "Low $1.99/month platform maintenance fee per organization",
-    "Advanced role-based access control", 
-    "24/7 priority support",
-    "Complete audit logging & compliance",
-    "Team management & analytics",
-    "Custom integrations & API access",
-    "White-label branding options",
-    "99.9% SLA guarantee",
-    "Advanced security monitoring",
-    "Multi-tenant architecture",
-    "Real-time notifications"
+    "🎯 Revolutionary active-user-only billing ($0.89/active user)",
+    "💰 Inactive users completely FREE forever",
+    "⚡ 15-minute migration assistant with zero downtime",
+    "🛡️ Advanced AI security engine with threat detection",
+    "🔄 SCIM 2.0 provisioning with 20+ enterprise providers",
+    "🎨 Complete white-label branding and custom domains",
+    "🧠 MX Intelligence system for cost optimization",
+    "🔐 Advanced MFA (TOTP, PIN verification, backup codes)",
+    "📊 Comprehensive audit logs and compliance reporting",
+    "⚙️ Enterprise bulk operations and CSV imports",
+    "🔍 Real-time security monitoring and alerting",
+    "🔑 API key management with scoped permissions",
+    "🪝 Webhook system with guaranteed delivery",
+    "☁️ Multi-tenant architecture with data isolation",
+    "📱 Real-time notifications and session monitoring",
+    "🆘 99.9% SLA with 24/7 enterprise support"
   ];
 
   if (isLoading) {
@@ -95,10 +99,15 @@ export function PricingPage() {
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Pay only $0.89 per <strong>active user</strong> + $1.99/month platform fee. 
-            Inactive users cost nothing. Get all enterprise features with complete transparency.
+            Inactive users cost nothing. Get enterprise-grade security, AI intelligence, and 15-minute migrations with complete transparency.
           </p>
-          <div className="inline-flex bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-lg font-medium">
-            70% less than Auth0, Okta, and Azure AD
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="inline-flex bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 px-4 py-2 rounded-full text-lg font-medium">
+              70% less than Auth0, Okta, and Azure AD
+            </div>
+            <div className="inline-flex bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-full text-sm font-medium">
+              + Advanced AI Security Engine
+            </div>
           </div>
         </div>
 
@@ -111,7 +120,7 @@ export function PricingPage() {
               </h2>
               <p className="text-lg text-green-700 dark:text-green-300 mb-6">
                 Unlike competitors who charge for ALL users, Auth247 only bills for <strong>active users</strong>.
-                Inactive users cost you nothing, making our platform dramatically more cost-effective.
+                Inactive users cost you nothing. Plus get AI-powered security, 15-minute migrations, and enterprise features that exceed Auth0/Okta capabilities.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                 <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm">
@@ -382,51 +391,12 @@ export function PricingPage() {
         </div>
       </div>
 
-      {/* Standard Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Product</h3>
-              <div className="space-y-2">
-                <Link href="/pricing" className="block text-gray-300 hover:text-white transition-colors">Pricing</Link>
-                <Link href="/demo" className="block text-gray-300 hover:text-white transition-colors">Live Demo</Link>
-                <Link href="/docs" className="block text-gray-300 hover:text-white transition-colors">Documentation</Link>
-                <Link href="/developer-portal" className="block text-gray-300 hover:text-white transition-colors">Developer Portal</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Company</h3>
-              <div className="space-y-2">
-                <Link href="/about" className="block text-gray-300 hover:text-white transition-colors">About</Link>
-                <Link href="/contact" className="block text-gray-300 hover:text-white transition-colors">Contact</Link>
-                <Link href="/migration-assistant" className="block text-gray-300 hover:text-white transition-colors">Migration</Link>
-                <Link href="/white-label" className="block text-gray-300 hover:text-white transition-colors">White Label</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Legal</h3>
-              <div className="space-y-2">
-                <Link href="/terms" className="block text-gray-300 hover:text-white transition-colors">Terms of Service</Link>
-                <Link href="/privacy" className="block text-gray-300 hover:text-white transition-colors">Privacy Policy</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Auth247</h3>
-              <p className="text-gray-300 text-sm">Secure 24/7 authentication platform for modern enterprises.</p>
-              <p className="text-gray-400 text-xs">© 2025 Auth247 Technologies LLC. All rights reserved.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
-
       {/* Anti-SSO Tax Section */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <AntiSSOTaxWidget variant="pricing" defaultUserCount={userCount} />
       </div>
+
+      <PublicFooter />
     </div>
   );
 }

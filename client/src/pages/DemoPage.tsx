@@ -4,6 +4,7 @@ import { ArrowLeft, Lock, Shield, CheckCircle, ExternalLink } from "lucide-react
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PublicNavigation } from "@/components/layout/PublicNavigation";
+import { PublicFooter } from "@/components/layout/PublicFooter";
 import { Logo } from "@/components/ui/logo";
 
 export function DemoPage() {
@@ -139,46 +140,7 @@ export function DemoPage() {
         </div>
       </div>
 
-      {/* Standard Footer */}
-      <footer className="bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Product</h3>
-              <div className="space-y-2">
-                <Link href="/pricing" className="block text-gray-300 hover:text-white transition-colors">Pricing</Link>
-                <Link href="/demo" className="block text-gray-300 hover:text-white transition-colors">Live Demo</Link>
-                <Link href="/docs" className="block text-gray-300 hover:text-white transition-colors">Documentation</Link>
-                <Link href="/developer-portal" className="block text-gray-300 hover:text-white transition-colors">Developer Portal</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Company</h3>
-              <div className="space-y-2">
-                <Link href="/about" className="block text-gray-300 hover:text-white transition-colors">About</Link>
-                <Link href="/contact" className="block text-gray-300 hover:text-white transition-colors">Contact</Link>
-                <Link href="/migration-assistant" className="block text-gray-300 hover:text-white transition-colors">Migration</Link>
-                <Link href="/white-label" className="block text-gray-300 hover:text-white transition-colors">White Label</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Legal</h3>
-              <div className="space-y-2">
-                <Link href="/terms" className="block text-gray-300 hover:text-white transition-colors">Terms of Service</Link>
-                <Link href="/privacy" className="block text-gray-300 hover:text-white transition-colors">Privacy Policy</Link>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Auth247</h3>
-              <p className="text-gray-300 text-sm">Secure 24/7 authentication platform for modern enterprises.</p>
-              <p className="text-gray-400 text-xs">© 2025 Auth247 Technologies LLC. All rights reserved.</p>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

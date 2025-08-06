@@ -4183,5 +4183,192 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Integration Management API Routes
+  app.get("/api/integrations", async (req: Request, res: Response) => {
+    try {
+      const { IntegrationService } = await import('./services/integration');
+      const integrations = await IntegrationService.getAvailableIntegrations();
+      
+      res.json({
+        success: true,
+        integrations,
+        categories: ['Communication', 'CRM', 'Project Management', 'HR', 'Productivity'],
+        total: integrations.length
+      });
+    } catch (error) {
+      console.error("Get integrations error:", error);
+      res.status(500).json({ error: "Failed to fetch integrations" });
+    }
+  });
+
+  app.get("/api/integrations/installed", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const user = req.user!;
+      const { IntegrationService } = await import('./services/integration');
+      const installations = await IntegrationService.getInstalledIntegrations(user.tenant);
+      
+      res.json({
+        success: true,
+        installations,
+        count: installations.length
+      });
+    } catch (error) {
+      console.error("Get installed integrations error:", error);
+      res.status(500).json({ error: "Failed to fetch installed integrations" });
+    }
+  });
+
+  app.post("/api/integrations/:integrationId/install", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const { config } = req.body;
+      const user = req.user!;
+      
+      const { IntegrationService } = await import('./services/integration');
+      const result = await IntegrationService.installIntegration(integrationId, user.tenant, user.id, config);
+      
+      if (result.authUrl) {
+        res.json({
+          success: true,
+          requiresAuth: true,
+          authUrl: result.authUrl,
+          message: "Please complete authorization to install this integration"
+        });
+      } else {
+        res.json({
+          success: true,
+          installation: result.installation,
+          message: `${integrationId} integration installed successfully`
+        });
+      }
+    } catch (error) {
+      console.error("Install integration error:", error);
+      res.status(500).json({ error: "Failed to install integration" });
+    }
+  });
+
+  app.get("/api/integrations/:integrationId/callback", async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const { code, state } = req.query;
+      
+      if (!code || !state) {
+        return res.redirect(`/?error=oauth_callback_failed`);
+      }
+      
+      const { IntegrationService } = await import('./services/integration');
+      const result = await IntegrationService.handleOAuthCallback(
+        integrationId,
+        code as string,
+        state as string
+      );
+      
+      if (result.success) {
+        res.redirect(`/integrations?success=integration_installed&name=${integrationId}`);
+      } else {
+        res.redirect(`/integrations?error=installation_failed`);
+      }
+    } catch (error) {
+      console.error("OAuth callback error:", error);
+      res.redirect(`/integrations?error=oauth_failed`);
+    }
+  });
+
+  app.delete("/api/integrations/:integrationId/uninstall", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const user = req.user!;
+      
+      const { IntegrationService } = await import('./services/integration');
+      const result = await IntegrationService.uninstallIntegration(integrationId, user.tenant);
+      
+      res.json({
+        success: result.success,
+        message: `${integrationId} integration uninstalled successfully`
+      });
+    } catch (error) {
+      console.error("Uninstall integration error:", error);
+      res.status(500).json({ error: "Failed to uninstall integration" });
+    }
+  });
+
+  app.post("/api/integrations/:integrationId/test", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const user = req.user!;
+      
+      const { IntegrationService } = await import('./services/integration');
+      const result = await IntegrationService.testIntegrationConnection(integrationId, user.tenant);
+      
+      res.json(result);
+    } catch (error) {
+      console.error("Test integration error:", error);
+      res.status(500).json({ error: "Failed to test integration" });
+    }
+  });
+
+  app.post("/api/integrations/:integrationId/sync", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const user = req.user!;
+      
+      const { IntegrationService } = await import('./services/integration');
+      const result = await IntegrationService.syncIntegration(integrationId, user.tenant);
+      
+      res.json({
+        success: result.success,
+        synced: result.synced,
+        errors: result.errors,
+        message: `Synced ${result.synced} records from ${integrationId}`
+      });
+    } catch (error) {
+      console.error("Sync integration error:", error);
+      res.status(500).json({ error: "Failed to sync integration" });
+    }
+  });
+
+  app.get("/api/integrations/:integrationId/logs", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const { limit } = req.query;
+      const user = req.user!;
+      
+      const { IntegrationService } = await import('./services/integration');
+      const logs = await IntegrationService.getIntegrationLogs(
+        integrationId, 
+        user.tenant, 
+        limit ? parseInt(limit as string) : 50
+      );
+      
+      res.json({
+        success: true,
+        logs,
+        integration: integrationId
+      });
+    } catch (error) {
+      console.error("Get integration logs error:", error);
+      res.status(500).json({ error: "Failed to fetch integration logs" });
+    }
+  });
+
+  app.get("/api/integrations/:integrationId/stats", requireAuth(), async (req: Request, res: Response) => {
+    try {
+      const { integrationId } = req.params;
+      const user = req.user!;
+      
+      const { IntegrationService } = await import('./services/integration');
+      const stats = await IntegrationService.getIntegrationStats(integrationId, user.tenant);
+      
+      res.json({
+        success: true,
+        stats,
+        integration: integrationId
+      });
+    } catch (error) {
+      console.error("Get integration stats error:", error);
+      res.status(500).json({ error: "Failed to fetch integration stats" });
+    }
+  });
+
   return httpServer;
 }

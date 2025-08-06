@@ -20,41 +20,63 @@ export function Auth247Provider({ children }: Auth247ProviderProps) {
     try {
       setState(prev => ({ ...prev, loading: true, error: null }));
       
-      // Try silent check first for better UX with timeout
+      // Enhanced session checking with better error handling
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // Increased timeout
       
       try {
-        const silentResult = await silentAuthCheck();
-        clearTimeout(timeoutId);
+        // Try silent check first with retry logic
+        let silentResult;
+        try {
+          silentResult = await silentAuthCheck();
+          clearTimeout(timeoutId);
+        } catch (silentError) {
+          console.log('[Auth] Silent check failed, trying fallback:', silentError.message);
+        }
         
-        if (silentResult.authenticated && silentResult.user && silentResult.session) {
+        if (silentResult?.authenticated && silentResult.user && silentResult.session) {
           const newState: AuthState = {
             isAuthenticated: true,
-            user: silentResult.user,
+            user: {
+              ...silentResult.user,
+              // Ensure all required fields are present
+              tenant: silentResult.user.tenant || "default",
+              roles: silentResult.user.roles || ["user"],
+              isActive: silentResult.user.isActive ?? true,
+            },
             session: silentResult.session,
             loading: false,
             error: null,
           };
           setState(newState);
           
-          // Set up automatic token refresh
-          if (silentResult.session) {
+          // Enhanced auto-refresh setup
+          if (silentResult.session?.expiresAt) {
             setupAutoRefresh(
               silentResult.session.expiresAt,
-              () => checkSession(), // Refresh success - reload session
-              () => setState(prev => ({ ...prev, isAuthenticated: false, user: null, session: null })) // Refresh failed
+              () => checkSession(),
+              () => {
+                console.log('[Auth] Token refresh failed, clearing session');
+                setState(prev => ({ 
+                  ...prev, 
+                  isAuthenticated: false, 
+                  user: null, 
+                  session: null,
+                  error: 'Session expired'
+                }));
+              }
             );
           }
           return;
         }
 
-        // Fallback to V2 session check
+        // Enhanced fallback to V2 session check
         const response = await fetch("/api/v2/auth/session", {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache"
           },
           signal: controller.signal
         });
@@ -62,17 +84,25 @@ export function Auth247Provider({ children }: Auth247ProviderProps) {
         if (response.ok) {
           const data = await response.json();
           
-          // Validate data structure before using
-          if (data.user) {
+          // Enhanced data validation
+          if (data?.user?.id && data?.user?.email) {
             const newState: AuthState = {
               isAuthenticated: true,
               user: {
-                ...data.user,
+                id: data.user.id,
+                email: data.user.email,
+                firstName: data.user.firstName || "",
+                lastName: data.user.lastName || "",
+                roles: Array.isArray(data.user.roles) ? data.user.roles : ["user"],
+                tenant: data.user.tenant || "default",
+                isActive: data.user.isActive ?? true,
+                emailVerified: data.user.emailVerified ?? false,
                 lastLogin: data.user.lastLogin ? new Date(data.user.lastLogin) : null,
-                tenant: data.user.tenant || "default", // Add tenant field if missing
+                organization: data.user.organization,
+                jobTitle: data.user.jobTitle
               },
               session: {
-                id: data.session?.id || "unknown",
+                id: data.session?.id || `session-${Date.now()}`,
                 expiresAt: data.session?.expiresAt ? new Date(data.session.expiresAt) : new Date(Date.now() + 24 * 60 * 60 * 1000),
                 ipAddress: data.session?.ipAddress || "unknown",
               },

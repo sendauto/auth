@@ -195,11 +195,91 @@ export function IntegrationMarketplacePage() {
     return matchesSearch && matchesCategory && matchesPremium;
   });
 
-  const handleInstallIntegration = (integration: Integration) => {
-    toast({
-      title: 'Integration Installed',
-      description: `${integration.name} has been successfully installed and configured.`,
-    });
+  const handleInstallIntegration = async (integration: Integration) => {
+    try {
+      const response = await fetch(`/api/integrations/${integration.id}/install`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ config: {} })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        if (result.requiresAuth && result.authUrl) {
+          // Redirect to OAuth authorization
+          window.location.href = result.authUrl;
+        } else {
+          toast({
+            title: 'Integration Installed',
+            description: `${integration.name} has been successfully installed and configured.`,
+          });
+        }
+      } else {
+        throw new Error(result.error || 'Installation failed');
+      }
+    } catch (error) {
+      console.error('Installation error:', error);
+      toast({
+        title: 'Installation Failed',
+        description: `Failed to install ${integration.name}. Please try again.`,
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleTestIntegration = async (integration: Integration) => {
+    try {
+      const response = await fetch(`/api/integrations/${integration.id}/test`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: 'Connection Test Successful',
+          description: `${integration.name} is connected and working properly.`,
+        });
+      } else {
+        throw new Error(result.status || 'Test failed');
+      }
+    } catch (error) {
+      console.error('Test error:', error);
+      toast({
+        title: 'Connection Test Failed',
+        description: `Failed to test ${integration.name} connection.`,
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const handleSyncIntegration = async (integration: Integration) => {
+    try {
+      const response = await fetch(`/api/integrations/${integration.id}/sync`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: 'Sync Completed',
+          description: `Synced ${result.synced} records from ${integration.name}.`,
+        });
+      } else {
+        throw new Error(result.message || 'Sync failed');
+      }
+    } catch (error) {
+      console.error('Sync error:', error);
+      toast({
+        title: 'Sync Failed',
+        description: `Failed to sync ${integration.name}.`,
+        variant: 'destructive'
+      });
+    }
   };
 
   const popularIntegrations = integrations.filter(i => i.isPopular).slice(0, 6);
