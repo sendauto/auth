@@ -1,44 +1,40 @@
-# Fly.io deployment configuration for Auth247
+# fly.toml app configuration file
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 
-app = "auth247"
-primary_region = "ord"
+app = "authmesh-app"
+primary_region = "dfw"
 
 [build]
-  builder = "heroku/buildpacks:20"
-
-[env]
-  NODE_ENV = "production"
-  PORT = "8080"
 
 [http_service]
-  internal_port = 8080
+  internal_port = 5000
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ["app"]
-
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  path = "/health"
-  port = 8080
-  timeout = "5s"
-  type = "http"
-
-[http_service.concurrency]
-  hard_limit = 25
-  soft_limit = 20
-  type = "connections"
 
 [[vm]]
   cpu_kind = "shared"
   cpus = 1
   memory_mb = 512
 
-# Uncomment for production scaling
-# [[vm]]
-#   cpu_kind = "performance"
-#   cpus = 2
-#   memory_mb = 2048
+[env]
+  NODE_ENV = "production"
+  PORT = "5000"
+  KEYCLOAK_URL = ""
+  KEYCLOAK_REALM = "authmesh"
+  KEYCLOAK_CLIENT_ID = "authmesh-app"
+
+[secrets]
+  # Set these secrets using: fly secrets set SECRET_NAME=value
+  # KEYCLOAK_CLIENT_SECRET
+  # SESSION_SECRET
+  # DATABASE_URL (if using a database)
+
+[deploy]
+  release_command = "npm run db:push"
+
+[[statics]]
+  guest_path = "/app/dist/public"
+  url_prefix = "/static/"

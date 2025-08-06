@@ -22,7 +22,7 @@ export function PublicNavigation({ currentPage }: PublicNavigationProps) {
 
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 bg-[#23252f]">
         <div className="flex justify-between items-center h-16">
           <Link href="/">
             <Logo size="md" />
@@ -64,7 +64,6 @@ export function PublicNavigation({ currentPage }: PublicNavigationProps) {
           </div>
         </div>
       </div>
-      
       <ProviderSelectionModal
         isOpen={showProviderModal}
         onClose={() => setShowProviderModal(false)}

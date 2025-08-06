@@ -1,39 +1,44 @@
-# Use Node.js 18 LTS
-FROM node:18-alpine
+# Use Node.js 18 Alpine for smaller image size
+FROM node:18-alpine AS base
 
-# Set working directory
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm ci --only=production
 
-# Copy source code
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
 COPY . .
+COPY --from=deps /app/node_modules ./node_modules
 
 # Build the application
 RUN npm run build
 
-# Expose port
-EXPOSE 5000
+# Production image, copy all the files and run the app
+FROM base AS runner
+WORKDIR /app
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV PORT=5000
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S auth247 -u 1001
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 auth247
 
-# Change ownership
-RUN chown -R auth247:nodejs /app
+# Copy the built application
+COPY --from=builder --chown=auth247:nodejs /app/dist ./dist
+COPY --from=builder --chown=auth247:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=auth247:nodejs /app/package.json ./package.json
+COPY --from=builder --chown=auth247:nodejs /app/shared ./shared
+
 USER auth247
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:5000/health || exit 1
+EXPOSE 5000
 
-# Start the application
+ENV HOSTNAME="0.0.0.0"
+
 CMD ["npm", "start"]
