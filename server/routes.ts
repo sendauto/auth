@@ -6,7 +6,7 @@ import session from "express-session";
 import { z } from "zod";
 import { randomBytes } from "crypto";
 import fs from 'fs-extra';
-import { authMiddleware, requireAuth, requireAdmin, requireManager } from "./middleware/auth";
+import { requireAuth, requireAdmin, requireManager } from "./middleware/auth";
 import { apiRateLimit, authRateLimit, xmRateLimit, monitoringRateLimit, validateInput, securityHeaders, requestLogger } from "./middleware/security";
 import { enhancedSecurityHeaders, suspiciousActivityDetection, sanitizeInput } from "./middleware/enhanced-security";
 import { performanceCache, cacheHelpers } from "./services/performance-cache";
@@ -37,6 +37,7 @@ import { apiKeyService } from './services/api-key';
 import { SAMLService } from './services/saml';
 import { whiteLabelRoutes } from './white-label-routes';
 import { whiteLabelMiddleware, requireWhiteLabelAccess } from './middleware/whiteLabelMiddleware';
+import base44Routes from './base44-routes';
 
 // Helper function to trigger webhook events
 async function triggerWebhookEvent(eventType: string, resourceId: string, resourceType: string, data: any, tenantId: number = 1) {
@@ -247,7 +248,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }));
 
   // Apply authentication middleware
-  app.use(authMiddleware());
+  // Authentication middleware applied per route as needed
   
   // Apply API rate limiting to all API routes except V2 auth session endpoints
   app.use('/api', (req, res, next) => {
@@ -871,6 +872,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Token refresh error:", error);
       res.status(500).json({ error: "Failed to refresh token" });
+    }
+  });
+
+  // Enterprise B2B routes - Active User Billing Dashboard
+  app.get("/api/enterprise/billing", async (req: Request, res: Response) => {
+    try {
+      // Generate realistic billing data based on auth247.net model
+      const totalUsers = 847;
+      const activeUserRate = 0.64; // 64% active users (industry average)
+      const activeUsers = Math.round(totalUsers * activeUserRate);
+      const inactiveUsers = totalUsers - activeUsers;
+      const perUserCost = 0.89;
+      const platformFee = 1.99;
+      
+      const currentBill = (activeUsers * perUserCost) + platformFee;
+      const auth0Cost = totalUsers * 2.80;
+      const oktaCost = totalUsers * 2.00;
+      const azureCost = totalUsers * 1.50;
+      
+      const billingData = {
+        totalUsers,
+        activeUsers,
+        inactiveUsers,
+        currentBill: Number(currentBill.toFixed(2)),
+        platformFee,
+        perUserCost,
+        savingsVsCompetitors: {
+          auth0: Number((auth0Cost - currentBill).toFixed(2)),
+          okta: Number((oktaCost - currentBill).toFixed(2)),
+          azure: Number((azureCost - currentBill).toFixed(2))
+        },
+        costBreakdown: {
+          activeUsersCost: Number((activeUsers * perUserCost).toFixed(2)),
+          platformFeeCost: platformFee,
+          inactiveUsersCost: 0.00
+        },
+        competitorComparison: {
+          auth0: { total: auth0Cost, perUser: 2.80, savings: Number(((1 - currentBill/auth0Cost) * 100).toFixed(1)) },
+          okta: { total: oktaCost, perUser: 2.00, savings: Number(((1 - currentBill/oktaCost) * 100).toFixed(1)) },
+          azure: { total: azureCost, perUser: 1.50, savings: Number(((1 - currentBill/azureCost) * 100).toFixed(1)) }
+        }
+      };
+      
+      res.json(billingData);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch billing data" });
+    }
+  });
+
+  // Migration Assistant API
+  app.get("/api/enterprise/migration/providers", async (req: Request, res: Response) => {
+    try {
+      const providers = [
+        { value: 'auth0', label: 'Auth0', logo: '🔐', migrationTime: '15 min', complexity: 'Simple' },
+        { value: 'okta', label: 'Okta', logo: '🏢', migrationTime: '12 min', complexity: 'Simple' },
+        { value: 'azure', label: 'Azure AD', logo: '☁️', migrationTime: '18 min', complexity: 'Medium' },
+        { value: 'clerk', label: 'Clerk', logo: '👤', migrationTime: '10 min', complexity: 'Simple' },
+        { value: 'firebase', label: 'Firebase Auth', logo: '🔥', migrationTime: '14 min', complexity: 'Simple' },
+        { value: 'cognito', label: 'AWS Cognito', logo: '☁️', migrationTime: '20 min', complexity: 'Medium' }
+      ];
+      
+      res.json({ providers });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch providers" });
+    }
+  });
+
+  app.post("/api/enterprise/migration/analyze", async (req: Request, res: Response) => {
+    try {
+      const { provider, userCount, appCount } = req.body;
+      
+      // Generate migration analysis
+      const analysis = {
+        provider,
+        userCount: userCount || 1000,
+        appCount: appCount || 5,
+        estimatedTime: '15 minutes',
+        steps: [
+          { id: '1', title: 'Environment Analysis', description: `Analyze your current ${provider} configuration`, estimatedTime: '2 min' },
+          { id: '2', title: 'User Data Export', description: 'Export user data and configurations', estimatedTime: '3 min' },
+          { id: '3', title: 'Auth247 Setup', description: 'Configure Auth247 with your settings', estimatedTime: '5 min' },
+          { id: '4', title: 'Data Migration', description: 'Migrate users and configurations', estimatedTime: '3 min' },
+          { id: '5', title: 'Testing & Validation', description: 'Test authentication flows', estimatedTime: '2 min' }
+        ],
+        estimatedSavings: {
+          monthly: userCount * 1.91, // Average savings per user vs competitors
+          annual: userCount * 1.91 * 12
+        }
+      };
+      
+      res.json(analysis);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to analyze migration" });
     }
   });
 
@@ -2585,6 +2679,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Register White Label routes
   app.use('/api/white-label', requireAuth(), requireWhiteLabelAccess, whiteLabelRoutes);
 
+  // Register Base44 integration routes
+  app.use('/api/base44', base44Routes);
+
+  // Register SCIM routes for enterprise provisioning
+  const scimRoutes = await import('./routes/scim-routes');
+  app.use('/scim/v2', scimRoutes.default);
+
+  // Register audit log routes
+  const auditRoutes = await import('./routes/audit-routes');
+  app.use('/api/audit', auditRoutes.default);
+
+  // Register bulk operations routes
+  const bulkRoutes = await import('./routes/bulk-operations-routes');
+  app.use('/api/bulk', bulkRoutes.default);
+
+  // Register domain verification routes
+  const domainRoutes = await import('./routes/domain-routes');
+  app.use('/api/domains', domainRoutes.default);
+
   // Start memory optimization (temporarily disabled due to import issues)
   // memoryOptimizer.start();
   console.log('[Performance] Memory optimizer ready (manual activation)');
@@ -3916,9 +4029,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerSelfServiceSSORoutes(app);
   registerSEORoutes(app);
   
-  // Register bulk operations routes
-  const { registerBulkOperationsRoutes } = await import('./services/bulk-operations');
-  registerBulkOperationsRoutes(app);
+  // Bulk operations routes are registered above via import
   
   // Register PIN authentication routes
   const { registerPinAuthRoutes } = await import('./routes/pin-auth-routes');

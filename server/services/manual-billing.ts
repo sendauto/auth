@@ -2,7 +2,9 @@ import type { User, InsertBillingTransaction, BillingTransaction } from '@shared
 import { db } from '../db';
 import { billingTransactions, users, subscriptions } from '@shared/schema';
 import { eq, desc } from 'drizzle-orm';
-import { emailService } from './email';
+import { EmailService } from './email';
+
+const emailService = new EmailService();
 
 export interface ManualPaymentData {
   userId: number;

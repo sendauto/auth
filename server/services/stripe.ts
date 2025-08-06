@@ -3,7 +3,9 @@ import type { User, Subscription, InsertBillingTransaction } from '@shared/schem
 import { db } from '../db';
 import { users, subscriptions, billingTransactions } from '@shared/schema';
 import { eq } from 'drizzle-orm';
-import { emailService } from './email';
+import { EmailService } from './email';
+
+const emailService = new EmailService();
 
 // Initialize Stripe client
 export const stripe = process.env.STRIPE_SECRET_KEY

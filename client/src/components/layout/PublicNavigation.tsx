@@ -14,9 +14,9 @@ export function PublicNavigation({ currentPage }: PublicNavigationProps) {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/pricing", label: "Pricing" },
+    { href: "/enterprise", label: "Enterprise" },
     { href: "/developer-portal", label: "Developers" },
     { href: "/integrations", label: "Integrations" },
-    { href: "/white-label", label: "White-Label" },
     { href: "/dlogin", label: "Demo" }
   ];
 
@@ -46,7 +46,7 @@ export function PublicNavigation({ currentPage }: PublicNavigationProps) {
 
           <div className="flex items-center space-x-4">
             <Link href="/login">
-              <Button variant="ghost" size="sm">Sign In</Button>
+              <Button variant="ghost" size="sm" className="text-[#3e75ed]">Sign In</Button>
             </Link>
             <Button 
               size="sm"
@@ -59,7 +59,7 @@ export function PublicNavigation({ currentPage }: PublicNavigationProps) {
           {/* Mobile menu button - could be expanded later */}
           <div className="md:hidden">
             <Link href="/login">
-              <Button variant="ghost" size="sm">Sign In</Button>
+              <Button variant="ghost" size="sm" className="text-[#3e75ed]">Sign In</Button>
             </Link>
           </div>
         </div>

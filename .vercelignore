@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+
+# Development files
+.env.local
+.env.development
+
+# Build artifacts
+.vite
+client/dist
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE files
+.vscode
+.idea
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Documentation that's not needed in production
+*.md
+!README.md
+
+# Test files
+*.test.*
+*.spec.*
+
+# Attached assets (too large for deployment)
+attached_assets/
+
+# Archive folders
+auth247-*

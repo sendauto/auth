@@ -57,6 +57,11 @@ const MFASetupPage = lazy(() => import("@/pages/MFASetupPage"));
 const ErrorPage = lazy(() => import("@/pages/ErrorPage").then(m => ({ default: m.ErrorPage })));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
+// Base44 Integration Pages
+const Base44LoginPage = lazy(() => import("@/pages/Base44LoginPage"));
+const Base44RegisterPage = lazy(() => import("@/pages/Base44RegisterPage"));
+const Base44Dashboard = lazy(() => import("@/pages/Base44Dashboard"));
+
 // Create protected route components
 const ProtectedDashboard = withAuthRoute(DashboardPage);
 const ProtectedProfile = withAuthRoute(ProfilePage);
@@ -136,6 +141,12 @@ function Router() {
         <Route path="/forgot-password" component={ForgotPasswordPage} />
         <Route path="/reset-password" component={ResetPasswordPage} />
         <Route path="/reset-password/*" component={ResetPasswordPage} />
+        
+        {/* Base44 Integration Pages */}
+        <Route path="/base44/login" component={Base44LoginPage} />
+        <Route path="/base44/register" component={Base44RegisterPage} />
+        <Route path="/base44/dashboard" component={Base44Dashboard} />
+        
         <Route path="/terms" component={TermsPage} />
         <Route path="/privacy" component={PrivacyPage} />
         <Route path="/error">
@@ -164,6 +175,40 @@ function Router() {
         <Route path="/system/:section?" component={ProtectedAdmin} />
         <Route path="/mx-monitoring" component={ProtectedMXMonitoring} />
         <Route path="/viral-growth" component={ProtectedViralGrowth} />
+        
+        {/* Enterprise B2B Features */}
+        <Route path="/enterprise" component={() => {
+          const EnterpriseIndex = lazy(() => import('./pages/enterprise/index'));
+          return <Suspense fallback={<div>Loading...</div>}><EnterpriseIndex /></Suspense>;
+        }} />
+        <Route path="/enterprise/scim" component={() => {
+          const SCIMConfig = lazy(() => import('./pages/enterprise/SCIMConfig'));
+          return <Suspense fallback={<div>Loading...</div>}><SCIMConfig /></Suspense>;
+        }} />
+        <Route path="/enterprise/audit-logs" component={() => {
+          const AuditLogs = lazy(() => import('./pages/enterprise/AuditLogs'));
+          return <Suspense fallback={<div>Loading...</div>}><AuditLogs /></Suspense>;
+        }} />
+        <Route path="/enterprise/bulk-operations" component={() => {
+          const BulkOperations = lazy(() => import('./pages/enterprise/BulkOperations'));
+          return <Suspense fallback={<div>Loading...</div>}><BulkOperations /></Suspense>;
+        }} />
+        <Route path="/enterprise/domains" component={() => {
+          const DomainVerification = lazy(() => import('./pages/enterprise/DomainVerification'));
+          return <Suspense fallback={<div>Loading...</div>}><DomainVerification /></Suspense>;
+        }} />
+        <Route path="/enterprise/billing" component={() => {
+          const ActiveUserBilling = lazy(() => import('./pages/enterprise/ActiveUserBilling'));
+          return <Suspense fallback={<div>Loading...</div>}><ActiveUserBilling /></Suspense>;
+        }} />
+        <Route path="/enterprise/migration" component={() => {
+          const MigrationAssistant = lazy(() => import('./pages/enterprise/MigrationAssistant'));
+          return <Suspense fallback={<div>Loading...</div>}><MigrationAssistant /></Suspense>;
+        }} />
+        <Route path="/enterprise/comparison" component={() => {
+          const CompetitorComparison = lazy(() => import('./pages/enterprise/CompetitorComparison'));
+          return <Suspense fallback={<div>Loading...</div>}><CompetitorComparison /></Suspense>;
+        }} />
         
         {/* Fallback to 404 */}
         <Route component={NotFound} />

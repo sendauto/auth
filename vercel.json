@@ -1,16 +1,32 @@
 {
   "version": 2,
-  "buildCommand": "vite build client --outDir ../dist/public",
-  "outputDirectory": "dist/public",
-  "installCommand": "npm install",
-  "framework": null,
+  "functions": {
+    "dist/index.js": {
+      "runtime": "nodejs20.x",
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["dist/**"]
+      }
+    }
+  ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/dist/index.js"
+    },
     {
       "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/dist/public/$1"
     }
   ]
 }

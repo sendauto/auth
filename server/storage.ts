@@ -16,9 +16,12 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserById(id: number): Promise<User | undefined>; // Alias for consistency
   getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
   getUserByKeycloakId(keycloakId: string): Promise<User | undefined>;
+  getUserByScimId(scimId: string, organizationId: number): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
+  deleteUser(id: number): Promise<boolean>;
   
   // Session operations
   createSession(session: InsertSession): Promise<Session>;
@@ -363,6 +366,29 @@ export class MemStorage implements IStorage {
       cacheService.set(cacheKey, user, 5); // Cache for 5 minutes
     }
     return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const user = Array.from(this.users.values()).find(user => (user as any).username === username);
+    return user;
+  }
+
+  async getUserByScimId(scimId: string, organizationId: number): Promise<User | undefined> {
+    const user = Array.from(this.users.values()).find(user => 
+      (user as any).scimExternalId === scimId && user.tenant === organizationId
+    );
+    return user;
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    const user = this.users.get(id);
+    if (!user) return false;
+    
+    // Soft delete by setting isActive to false
+    user.isActive = false;
+    user.updatedAt = new Date();
+    
+    return true;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
