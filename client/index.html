@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="description" content="Enterprise authentication platform with no SSO tax. Save 67% vs Auth0, Okta. 5-minute SSO setup, enterprise security included. Start free trial today." />
+    <meta name="keywords" content="authentication platform, enterprise SSO, no SSO tax, Auth0 alternative, Okta alternative, SAML authentication, OAuth2 provider, enterprise login, secure authentication, multi-factor authentication" />
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="Auth247">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://auth247.net">
+    <meta property="og:title" content="Auth247 - Enterprise Authentication Without the SSO Tax">
+    <meta property="og:description" content="Save 67% on enterprise authentication. No hidden SSO costs, 5-minute setup, enterprise security included.">
+    <meta property="og:image" content="https://auth247.net/images/auth247-social-share.png">
+    <meta property="og:site_name" content="Auth247">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://auth247.net">
+    <meta property="twitter:title" content="Auth247 - Enterprise Authentication Without the SSO Tax">
+    <meta property="twitter:description" content="Save 67% on enterprise authentication. No hidden SSO costs, 5-minute setup, enterprise security included.">
+    <meta property="twitter:image" content="https://auth247.net/images/auth247-social-share.png">
+    <meta property="twitter:creator" content="@auth247net">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://auth247.net">
+    
+    <!-- Additional SEO -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2563eb" />
+    <meta name="msapplication-TileColor" content="#2563eb">
+    
+    <title>Auth247 - Secure 24/7 Authentication Platform | No SSO Tax</title>
+    
+    <!-- Schema.org Organization structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Auth247",
+      "alternateName": "Auth247 Authentication Platform",
+      "url": "https://auth247.net",
+      "logo": "https://auth247.net/images/auth247-logo.png",
+      "description": "Enterprise authentication platform providing secure 24/7 access management without SSO tax",
+      "foundingDate": "2024",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "sales@auth247.net",
+        "availableLanguage": "English"
+      },
+      "sameAs": [
+        "https://twitter.com/auth247net",
+        "https://linkedin.com/company/auth247",
+        "https://github.com/auth247"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      }
+    }
+    </script>
+    
+    <!-- Schema.org SoftwareApplication structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Auth247",
+      "description": "Enterprise authentication platform with no SSO tax",
+      "url": "https://auth247.net",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "Web-based",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150",
+        "bestRating": "5"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "9",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "9",
+          "priceCurrency": "USD",
+          "billingIncrement": "1",
+          "unitCode": "MON"
+        }
+      },
+      "featureList": [
+        "Enterprise SSO (no extra cost)",
+        "SAML 2.0 authentication",
+        "OAuth2 integration",
+        "Multi-factor authentication",
+        "Self-service setup",
+        "Real-time monitoring"
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+    
+    <!-- Service Worker Registration for Offline Support -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((registration) => {
+              console.log('[SW] Registration successful:', registration);
+            })
+            .catch((error) => {
+              console.log('[SW] Registration failed:', error);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

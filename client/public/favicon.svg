@@ -1,0 +1,7 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="32" height="32" rx="8" fill="#2563eb"/>
+  <!-- Auth247 Logo Design -->
+  <path d="M16 6C18.2 6 20 7.8 20 10V12H24C24.6 12 25 12.4 25 13V26C25 26.6 24.6 27 24 27H8C7.4 27 7 26.6 7 26V13C7 12.4 7.4 12 8 12H12V10C12 7.8 13.8 6 16 6ZM16 8C14.9 8 14 8.9 14 10V12H18V10C18 8.9 17.1 8 16 8Z" fill="white"/>
+  <!-- "247" integrated into design -->
+  <text x="16" y="22" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="white">247</text>
+</svg>

@@ -1,0 +1,283 @@
+/* Import Enhanced UI Styles */
+@import './styles/enhanced-ui.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fafafa;
+  --foreground: #1a1a1a;
+  --muted: #f4f4f5;
+  --muted-foreground: #6b7280;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --border: #e4e4e7;
+  --input: #f4f4f5;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #475569;
+  --accent: #f8fafc;
+  --accent-foreground: #334155;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --ring: #2563eb;
+  --radius: 0.5rem;
+  
+  /* Sidebar colors */
+  --sidebar-background: hsl(0, 0%, 100%);
+  --sidebar-foreground: hsl(224, 71.4%, 4.1%);
+  --sidebar-primary: hsl(221.2, 83.2%, 53.3%);
+  --sidebar-primary-foreground: hsl(210, 40%, 98%);
+  --sidebar-accent: hsl(220, 14.3%, 95.9%);
+  --sidebar-accent-foreground: hsl(220.9, 39.3%, 11%);
+  --sidebar-border: hsl(220, 13%, 91%);
+  --sidebar-ring: hsl(221.2, 83.2%, 53.3%);
+}
+
+.dark {
+  --background: #0f0f0f;
+  --foreground: #f5f5f5;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1aa;
+  --popover: #0f0f0f;
+  --popover-foreground: #f5f5f5;
+  --card: #1a1a1a;
+  --card-foreground: #f5f5f5;
+  --border: #27272a;
+  --input: #27272a;
+  --primary: #3b82f6;
+  --primary-foreground: #f8fafc;
+  --secondary: #27272a;
+  --secondary-foreground: #e2e8f0;
+  --accent: #27272a;
+  --accent-foreground: #e2e8f0;
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  --ring: #3b82f6;
+  
+  /* Sidebar dark mode */
+  --sidebar-background: hsl(224, 71.4%, 4.1%);
+  --sidebar-foreground: hsl(210, 40%, 98%);
+  --sidebar-primary: hsl(221.2, 83.2%, 53.3%);
+  --sidebar-primary-foreground: hsl(210, 40%, 98%);
+  --sidebar-accent: hsl(223, 47%, 11%);
+  --sidebar-accent-foreground: hsl(210, 40%, 98%);
+  --sidebar-border: hsl(216, 34%, 17%);
+  --sidebar-ring: hsl(221.2, 83.2%, 53.3%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+}
+
+/* Custom handcrafted styles */
+.auth-card {
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark .auth-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #27272a 100%);
+  border-color: #3f3f46;
+}
+
+.demo-role-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.2s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-role-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  transform: scaleX(0);
+  transition: transform 0.2s ease-out;
+}
+
+.demo-role-card:hover::before {
+  transform: scaleX(1);
+}
+
+.demo-role-card:hover {
+  border-color: #3b82f6;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -4px rgba(59, 130, 246, 0.15);
+}
+
+.dark .demo-role-card {
+  background: #1a1a1a;
+  border-color: #3f3f46;
+}
+
+.dark .demo-role-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 12px 20px -4px rgba(59, 130, 246, 0.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease-out;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 15px -3px rgba(59, 130, 246, 0.3);
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.feature-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s ease-out;
+  position: relative;
+}
+
+.feature-card:hover {
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+}
+
+.dark .feature-card {
+  background: #1a1a1a;
+  border-color: #3f3f46;
+}
+
+.dark .feature-card:hover {
+  border-color: #52525b;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .text-gradient {
+  background: linear-gradient(135deg, #f9fafb 0%, #d1d5db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Auth247 specific styles */
+.auth-gradient {
+  background: linear-gradient(135deg, hsl(220, 14.3%, 95.9%) 0%, hsl(220, 13%, 91%) 100%);
+}
+
+.auth-card-shadow {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.auth-input-focus {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors;
+}
+
+.auth-button-primary {
+  @apply bg-primary text-primary-foreground font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary;
+}
+
+.auth-button-primary:hover {
+  @apply opacity-90;
+}
+
+.auth-button-secondary {
+  @apply bg-secondary text-secondary-foreground font-medium py-3 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ring;
+}
+
+.auth-button-secondary:hover {
+  @apply opacity-80;
+}
+
+/* Navigation active state */
+.nav-item-active {
+  @apply text-primary bg-blue-50 font-medium;
+}
+
+.nav-item {
+  @apply text-muted-foreground hover:text-foreground hover:bg-accent font-medium transition-colors;
+}
+
+/* Role-based visibility helpers */
+.role-user { @apply block; }
+.role-manager { @apply block; }
+.role-admin { @apply block; }
+.role-super-admin { @apply block; }
+
+/* Loading spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
